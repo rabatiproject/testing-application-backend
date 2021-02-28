@@ -4,16 +4,28 @@ import (
 	"net/http"
 )
 
-type HttpHandler func(http.ResponseWriter, *http.Request)
-
-type GuardedService struct {
-	Path    string
-	handler HttpHandler
+type GuardedWebService struct {
+	WebService
+	Validator RequestValidator
 }
 
-func (service *GuardedService) register() {
-	http.HandleFunc(service.Path, service.handler)
-}
-func wrapp(){
-	
+//func NewGuardedWebService(webService WebService) *GuardedWebService {
+//	return GuardedWebService{}
+//}
+
+func NewGuardedService(webService *WebService, validator RequestValidator) *GuardedWebService {
+	guardedWebService := &GuardedWebService{}
+
+	guardedWebService.Path = webService.Path
+	guardedWebService.Handler = func(writer http.ResponseWriter, req *http.Request) {
+		if validator.IsValid(req) {
+			webService.Handler(writer, req)
+		} else {
+			writer.WriteHeader(http.StatusUnauthorized)
+			return
+		}
+	}
+
+	guardedWebService.Validator = validator
+	return guardedWebService
 }

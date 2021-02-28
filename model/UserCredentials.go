@@ -1,7 +1,6 @@
-package user
+package model
 
-type UserCredentials struct {
-	Username string
-	Password string
+type UserCredential struct {
+	Password string `json:"password"`
+	Username string `json:"username"`
 }
-

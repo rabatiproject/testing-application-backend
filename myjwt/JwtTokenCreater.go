@@ -1,4 +1,4 @@
-package jwt
+package myjwt
 
 import (
 	"github.com/dgrijalva/jwt-go"
@@ -8,7 +8,7 @@ import (
 )
 
 var (
-	secretKey = "my_secret_key"
+	jwtKey = "my_secret_key"
 )
 
 type JwtResponse struct {
@@ -26,7 +26,7 @@ func CreateToken(credential model.UserCredential) (string, int) {
 		},
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwtResponse)
-	tokenString, err := token.SignedString([]byte(secretKey))
+	tokenString, err := token.SignedString([]byte(jwtKey))
 	if err != nil {
 		return "", http.StatusInternalServerError
 	} else {
