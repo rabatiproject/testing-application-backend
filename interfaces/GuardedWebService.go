@@ -1,6 +1,7 @@
 package interfaces
 
 import (
+	"github.com/rabatiproject/testing-application-backend/myjwt"
 	"net/http"
 )
 
@@ -9,16 +10,16 @@ type GuardedWebService struct {
 	Validator RequestValidator
 }
 
-//func NewGuardedWebService(webService WebService) *GuardedWebService {
-//	return GuardedWebService{}
-//}
+var (
+	jwtValidator myjwt.JwtRequestValidator
+)
 
-func NewGuardedService(webService *WebService, validator RequestValidator) *GuardedWebService {
+func NewGuardedService(webService *WebService) *GuardedWebService {
 	guardedWebService := &GuardedWebService{}
 
 	guardedWebService.Path = webService.Path
 	guardedWebService.Handler = func(writer http.ResponseWriter, req *http.Request) {
-		if validator.IsValid(req) {
+		if jwtValidator.IsValid(req) {
 			webService.Handler(writer, req)
 		} else {
 			writer.WriteHeader(http.StatusUnauthorized)
@@ -26,6 +27,6 @@ func NewGuardedService(webService *WebService, validator RequestValidator) *Guar
 		}
 	}
 
-	guardedWebService.Validator = validator
+	guardedWebService.Validator = jwtValidator
 	return guardedWebService
 }

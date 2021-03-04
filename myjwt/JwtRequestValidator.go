@@ -1,11 +1,10 @@
 package myjwt
 
 import (
+	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"net/http"
 )
-
-//const token_bearer = "Bearer"
 
 type JwtRequestValidator struct {
 }
@@ -19,10 +18,13 @@ func (jwtValidator JwtRequestValidator) IsValid(req *http.Request) bool {
 		if len(authHeader) > 0 {
 			//	tknStr := strings.ReplaceAll(authHeader, token_bearer, "")
 
-			claims := &jwt.StandardClaims{}
+			//claims := &jwt.StandardClaims{}
 
-			tkn, err := jwt.ParseWithClaims(authHeader, claims, func(token *jwt.Token) (interface{}, error) {
-				return jwtKey, nil
+			tkn, err := jwt.Parse(authHeader, func(token *jwt.Token) (interface{}, error) {
+				if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+					return nil, fmt.Errorf("There was an error")
+				}
+				return []byte("my_secret_key"), nil
 			})
 
 			if err != nil {

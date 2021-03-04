@@ -18,7 +18,7 @@ type JwtResponse struct {
 
 func CreateToken(credential model.UserCredential) (string, int) {
 
-	expirationTime := time.Now().Add(5 * time.Minute)
+	expirationTime := time.Now().Add(5 * time.Hour)
 	jwtResponse := &JwtResponse{
 		Username: credential.Username,
 		StandardClaims: jwt.StandardClaims{
