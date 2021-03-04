@@ -24,7 +24,7 @@ func (jwtValidator JwtRequestValidator) IsValid(req *http.Request) bool {
 				if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 					return nil, fmt.Errorf("There was an error")
 				}
-				return []byte("my_secret_key"), nil
+				return JwtSecretKey, nil
 			})
 
 			if err != nil {

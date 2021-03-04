@@ -8,7 +8,7 @@ import (
 )
 
 var (
-	jwtKey = "my_secret_key"
+	JwtSecretKey = []byte("my_secret_key")
 )
 
 type JwtResponse struct {
@@ -26,7 +26,7 @@ func CreateToken(credential model.UserCredential) (string, int) {
 		},
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwtResponse)
-	tokenString, err := token.SignedString([]byte(jwtKey))
+	tokenString, err := token.SignedString(JwtSecretKey)
 	if err != nil {
 		return "", http.StatusInternalServerError
 	} else {
