@@ -3,15 +3,15 @@ package services
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/rabatiproject/testing-application-backend/model"
-	"github.com/rabatiproject/testing-application-backend/myjwt"
+	"github.com/rabatiproject/testing-application-backend/jwtConfigs"
+	"github.com/rabatiproject/testing-application-backend/model/jwt"
 	"log"
 	"net/http"
 )
 
 func SignIn(writer http.ResponseWriter, r *http.Request) {
 
-	var credential model.UserCredential
+	var credential jwt.UserCredential
 	parseError := json.NewDecoder(r.Body).Decode(&credential)
 
 	if parseError != nil {
@@ -23,7 +23,7 @@ func SignIn(writer http.ResponseWriter, r *http.Request) {
 
 		if credential.Username == "deniz" && credential.Password == "deniz" {
 
-			token, responseCode := myjwt.CreateToken(credential)
+			token, responseCode := jwtConfigs.CreateToken(credential)
 
 			if responseCode != http.StatusInternalServerError {
 				log.Println(credential.Username + " signed in successfully")

@@ -1,8 +1,8 @@
-package myjwt
+package jwtConfigs
 
 import (
 	"github.com/dgrijalva/jwt-go"
-	"github.com/rabatiproject/testing-application-backend/model"
+	jwt2 "github.com/rabatiproject/testing-application-backend/model/jwt"
 	"net/http"
 	"time"
 )
@@ -16,7 +16,7 @@ type JwtResponse struct {
 	jwt.StandardClaims
 }
 
-func CreateToken(credential model.UserCredential) (string, int) {
+func CreateToken(credential jwt2.UserCredential) (string, int) {
 
 	expirationTime := time.Now().Add(5 * time.Hour)
 	jwtResponse := &JwtResponse{

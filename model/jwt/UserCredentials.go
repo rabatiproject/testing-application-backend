@@ -1,4 +1,4 @@
-package model
+package jwt
 
 type UserCredential struct {
 	Password string `json:"password"`

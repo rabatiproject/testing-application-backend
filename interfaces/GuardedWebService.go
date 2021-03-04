@@ -1,7 +1,7 @@
 package interfaces
 
 import (
-	"github.com/rabatiproject/testing-application-backend/myjwt"
+	"github.com/rabatiproject/testing-application-backend/jwtConfigs"
 	"net/http"
 )
 
@@ -11,7 +11,7 @@ type GuardedWebService struct {
 }
 
 var (
-	jwtValidator myjwt.JwtRequestValidator
+	jwtValidator jwtConfigs.JwtRequestValidator
 )
 
 func NewGuardedService(webService *WebService) *GuardedWebService {
