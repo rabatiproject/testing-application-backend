@@ -5,7 +5,6 @@ type Exam struct {
 	StartTime         int64
 	EndTime           int64
 	DurationInMinutes int64
-	Questions         []Question
-	Creator           Teacher
+	Creator           User
 	Title             string
 }
