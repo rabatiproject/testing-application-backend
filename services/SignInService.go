@@ -18,17 +18,15 @@ func SignIn(writer http.ResponseWriter, r *http.Request) {
 		writer.WriteHeader(http.StatusBadRequest)
 		writer.Write([]byte("Not valid"))
 		fmt.Println(parseError.Error())
-		//log.Panic("Invalid data")
 	} else {
 
 		if credential.Username == "deniz" && credential.Password == "deniz" {
 
-			token, responseCode := jwtConfigs.CreateToken(credential)
+			token, error := jwtConfigs.CreateToken(credential)
 
-			if responseCode != http.StatusInternalServerError {
+			if error == nil {
 				log.Println(credential.Username + " signed in successfully")
-				//writer.Header().Add("Authorization", "Bearer "+token)
-				writer.Header().Add("Authorization", token)
+				writer.Header().Add(jwtConfigs.AuthHeader, jwtConfigs.AuthHeaderPrefix+token)
 				return
 			}
 
