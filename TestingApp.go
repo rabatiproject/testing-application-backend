@@ -1,7 +1,8 @@
 package main
 
 import (
-	"github.com/rabatiproject/testing-application-backend/interfaces"
+	"github.com/gorilla/mux"
+	"github.com/rabatiproject/testing-application-backend/middlewares"
 	"github.com/rabatiproject/testing-application-backend/services"
 	"log"
 	"net/http"
@@ -10,19 +11,9 @@ import (
 func main() {
 	log.Println("Application Started")
 
-	signInService := interfaces.WebService{Path: "/SignIn", Handler: services.SignIn}
-	signInService.Register()
+	r := mux.NewRouter()
+	r.HandleFunc("/SignIn", services.SignIn).Methods("GET")
+	r.Use(middlewares.LoggingMiddleware)
 
-	testService := interfaces.NewGuardedService(&interfaces.WebService{
-		Path:    "/Test",
-		Handler: services.Test,
-	})
-	testService.Register()
-
-	err := http.ListenAndServe(":8080", nil)
-
-	if err != nil {
-		log.Fatal("Server could not be initiated")
-	}
-
+	log.Fatal(http.ListenAndServe("localhost:8080", r))
 }
