@@ -20,5 +20,8 @@ func main() {
 	apiRouter.Use(middlewares.AuthorizationMiddleware)
 	apiRouter.HandleFunc("/Test", services.Test)
 
+	apiRouter.HandleFunc("/Exam", services.CreateExam).Methods(http.MethodPost)
+	apiRouter.HandleFunc("/Exam/{id}", services.DeleteExam).Methods(http.MethodDelete)
+
 	log.Fatal(http.ListenAndServe("localhost:8080", r))
 }
