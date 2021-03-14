@@ -2,19 +2,39 @@ package services
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/gorilla/mux"
+	"github.com/rabatiproject/testing-application-backend/managers"
 	"github.com/rabatiproject/testing-application-backend/model/base"
-	"log"
 	"net/http"
+	"strconv"
 )
 
 func CreateExam(writer http.ResponseWriter, request *http.Request) {
 	exam := &base.Exam{}
 	json.NewDecoder(request.Body).Decode(exam)
-	fmt.Println(exam.Title)
+	creationError := managers.CreateNewExam(exam)
+
+	if creationError != nil {
+		writer.WriteHeader(http.StatusNoContent)
+		return
+	}
 }
 
 func DeleteExam(write http.ResponseWriter, request *http.Request) {
-	log.Println("Deleting ", mux.Vars(request))
+	i, err := strconv.ParseInt(
+		mux.Vars(request)["id"],
+		10,
+		64,
+	)
+
+	if err != nil {
+		write.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	notFoundError := managers.DeleteExam(i)
+
+	if notFoundError != nil {
+		write.WriteHeader(http.StatusNoContent)
+		return
+	}
 }
