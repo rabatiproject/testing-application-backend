@@ -1,6 +1,6 @@
 package base
 
 type Choice struct {
-	Text   string
-	Images []string
+	Text   string   `json:"text"`
+	Images []string `json:"images"`
 }

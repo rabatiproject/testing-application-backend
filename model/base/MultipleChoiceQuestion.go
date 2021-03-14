@@ -2,5 +2,5 @@ package base
 
 type MultipleChoiceQuestion struct {
 	Question
-	Choices []Choice
+	Choices []Choice `json:"choices"`
 }

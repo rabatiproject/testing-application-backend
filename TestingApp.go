@@ -13,15 +13,19 @@ func main() {
 
 	r := mux.NewRouter()
 
-	r.HandleFunc("/SignIn", services.SignIn).Methods("GET")
+	r.HandleFunc("/signIn", services.SignIn).Methods("GET")
 	r.Use(middlewares.LoggingMiddleware)
 
 	apiRouter := r.PathPrefix("/api").Subrouter()
 	apiRouter.Use(middlewares.AuthorizationMiddleware)
-	apiRouter.HandleFunc("/Test", services.Test)
+	apiRouter.HandleFunc("/test", services.Test)
 
-	apiRouter.HandleFunc("/Exam", services.CreateExam).Methods(http.MethodPost)
-	apiRouter.HandleFunc("/Exam/{id}", services.DeleteExam).Methods(http.MethodDelete)
+	apiRouter.HandleFunc("/exam", services.CreateExam).Methods(http.MethodPost)
+	apiRouter.HandleFunc("/exam/{id}", services.DeleteExam).Methods(http.MethodDelete)
+
+	apiRouter.HandleFunc("/question/multipleChoice", services.CreateMultipleChoiceQuestion).Methods(http.MethodPost)
+	apiRouter.HandleFunc("/question/openEnded", services.CreateOpenEndedQuestion).Methods(http.MethodPost)
+	apiRouter.HandleFunc("/question/programming", services.CreateProgrammingQuestion).Methods(http.MethodPost)
 
 	log.Fatal(http.ListenAndServe("localhost:8080", r))
 }
