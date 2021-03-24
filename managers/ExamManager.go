@@ -2,19 +2,17 @@ package managers
 
 import (
 	"github.com/rabatiproject/testing-application-backend/model/base"
-	"math/rand"
+	"github.com/rabatiproject/testing-application-backend/repos/definitions"
+	"github.com/rabatiproject/testing-application-backend/repos/implmentaions"
 )
 
 var (
-	exams []*base.Exam
+	exams          []*base.Exam
+	examRepository definitions.ExamRepo = implmentaions.NewDynamoDbRepo()
 )
 
 func CreateNewExam(exam *base.Exam) error {
-	if exam.Id == 0 {
-		exam.Id = rand.Int63()
-	}
-	exams = append(exams, exam)
-	return nil
+	return examRepository.SaveExam(exam)
 }
 
 func GetExam(id int64) *base.Exam {
@@ -22,19 +20,11 @@ func GetExam(id int64) *base.Exam {
 }
 
 func DeleteExam(id int64) error {
-	for i, v := range exams {
-		if v.Id == id {
-			exams = append(exams[:i], exams[i+1:]...)
-		}
-	}
+
 	return nil
 }
 
 func findExamFromSlice(id int64) *base.Exam {
-	for _, v := range exams {
-		if v.Id == id {
-			return v
-		}
-	}
+
 	return nil
 }
