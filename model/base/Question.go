@@ -1,12 +1,16 @@
 package base
 
-import "os/user"
+type QuestionType int
+
+const (
+	QuestionOpenEnded QuestionType = iota
+	QuestionMultipleChoice
+	QuestionProgramming
+)
 
 type Question struct {
-	Direction string   `json:"direction"`
-	Images    []string `json:"images"`
-}
-
-type CreatedQuestion interface {
-	GetCreator() *user.User
+	Id        string       `json:"id"`
+	Type      QuestionType `json:"type"`
+	Direction string       `json:"direction"`
+	Images    []string     `json:"images"`
 }

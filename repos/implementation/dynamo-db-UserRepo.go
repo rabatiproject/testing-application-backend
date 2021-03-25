@@ -1,7 +1,6 @@
 package implementation
 
 import (
-	"fmt"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
@@ -22,28 +21,8 @@ func NewUserRepo() *userRepo {
 }
 
 func (userRepo *userRepo) CreateUser(user *base.User) error {
-	dynamodbClient := getNewClient()
 	user.Id = uuid.New().String()
-	attributeValue, err := dynamodbattribute.MarshalMap(user)
-
-	if err != nil {
-		fmt.Println(err)
-		return err
-	}
-
-	input := &dynamodb.PutItemInput{
-		TableName: aws.String(NewUserRepo().TableName),
-		Item:      attributeValue,
-	}
-
-	_, err2 := dynamodbClient.PutItem(input)
-
-	if err2 != nil {
-		fmt.Println(err2)
-		return err2
-	}
-
-	return nil
+	return insert(user, NewUserRepo().TableName)
 }
 
 func (userRepo *userRepo) UserExists(email string) bool {

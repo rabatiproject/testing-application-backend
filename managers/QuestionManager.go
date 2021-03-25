@@ -1,26 +1,17 @@
 package managers
 
 import (
+	"github.com/rabatiproject/testing-application-backend/beans"
 	"github.com/rabatiproject/testing-application-backend/model/base"
-	"github.com/rabatiproject/testing-application-backend/model/creator"
 )
 
-var (
-	questions []base.CreatedQuestion
-)
-
-func CreateMultipleQuestion(c *creator.MultipleChoiceQuestionC) {
-	questions = append(questions, c)
+func CreateMultipleQuestion(c *base.MultipleChoiceQuestion) {
+	beans.QuestionRepository.CreateMCQuestion(c)
 }
 
-func CreateOpenEndedQuestion(c *creator.OpenEndedQuestionC) {
-	questions = append(questions, c)
+func CreateOpenEndedQuestion(c *base.OpenEndedQuestion) {
+	beans.QuestionRepository.CreateOEQuestion(c)
 }
-
-func CreateProgrammingQuestion(c *creator.ProgrammingQuestionC) {
-	questions = append(questions, c)
-}
-
-func AddQuestionToExam(id int64) {
-
+func CreateProgrammingQuestion(c *base.ProgrammingQuestion) {
+	beans.QuestionRepository.CreatePQuestion(c)
 }
