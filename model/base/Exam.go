@@ -5,6 +5,6 @@ type Exam struct {
 	StartTime         int64  `json:"start_time"`
 	EndTime           int64  `json:"end_time"`
 	DurationInMinutes int64  `json:"duration_in_minutes"`
-	Creator           User   `json:"creator"`
+	CreatorId         string `json:"creator"`
 	Title             string `json:"title"`
 }

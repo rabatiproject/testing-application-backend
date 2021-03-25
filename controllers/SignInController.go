@@ -1,9 +1,11 @@
-package services
+package controllers
 
 import (
 	"encoding/json"
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
+	"github.com/rabatiproject/testing-application-backend/beans"
+	"github.com/rabatiproject/testing-application-backend/model/base"
 	"github.com/rabatiproject/testing-application-backend/model/jwtModel"
 	"log"
 	"net/http"
@@ -57,4 +59,15 @@ func SignIn(writer http.ResponseWriter, r *http.Request) {
 
 	}
 
+}
+
+func AddUser(writer http.ResponseWriter, request *http.Request) {
+	user := &base.User{}
+	json.NewDecoder(request.Body).Decode(user)
+	creationError := beans.UserRepository.CreateUser(user)
+
+	if creationError != nil {
+		writer.WriteHeader(http.StatusNoContent)
+		return
+	}
 }

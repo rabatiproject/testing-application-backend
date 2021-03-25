@@ -6,8 +6,8 @@ import (
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/gorilla/mux"
+	"github.com/rabatiproject/testing-application-backend/controllers"
 	"github.com/rabatiproject/testing-application-backend/middlewares"
-	"github.com/rabatiproject/testing-application-backend/services"
 	"log"
 	"net/http"
 )
@@ -17,19 +17,19 @@ func main() {
 
 	r := mux.NewRouter()
 
-	r.HandleFunc("/signIn", services.SignIn).Methods("GET")
+	r.HandleFunc("/signIn", controllers.SignIn).Methods("GET")
+	r.HandleFunc("/signUp", controllers.AddUser).Methods("POST")
 	r.Use(middlewares.LoggingMiddleware)
 
 	apiRouter := r.PathPrefix("/api").Subrouter()
 	apiRouter.Use(middlewares.AuthorizationMiddleware)
-	apiRouter.HandleFunc("/test", services.Test)
+	apiRouter.HandleFunc("/test", controllers.Test)
 
-	apiRouter.HandleFunc("/exam", services.CreateExam).Methods(http.MethodPost)
-	apiRouter.HandleFunc("/exam/{id}", services.DeleteExam).Methods(http.MethodDelete)
+	apiRouter.HandleFunc("/exam", controllers.CreateExam).Methods(http.MethodPost)
 
-	apiRouter.HandleFunc("/question/multipleChoice", services.CreateMultipleChoiceQuestion).Methods(http.MethodPost)
-	apiRouter.HandleFunc("/question/openEnded", services.CreateOpenEndedQuestion).Methods(http.MethodPost)
-	apiRouter.HandleFunc("/question/programming", services.CreateProgrammingQuestion).Methods(http.MethodPost)
+	apiRouter.HandleFunc("/question/multipleChoice", controllers.CreateMultipleChoiceQuestion).Methods(http.MethodPost)
+	apiRouter.HandleFunc("/question/openEnded", controllers.CreateOpenEndedQuestion).Methods(http.MethodPost)
+	apiRouter.HandleFunc("/question/programming", controllers.CreateProgrammingQuestion).Methods(http.MethodPost)
 
 	printDynamoTables()
 
