@@ -20,7 +20,7 @@ var (
 )
 
 type JwtResponse struct {
-	Username string `json:"username"`
+	User *base.User `json:"user"`
 	jwt.StandardClaims
 }
 
@@ -29,17 +29,18 @@ func SignIn(writer http.ResponseWriter, r *http.Request) {
 	var credential jwtModel.UserCredential
 	parseError := json.NewDecoder(r.Body).Decode(&credential)
 
-	if parseError != nil {
+	if parseError != nil &&
+		len(strings.TrimSpace(credential.Email)) == 0 &&
+		len(strings.TrimSpace(credential.Password)) == 0 {
 		writer.WriteHeader(http.StatusBadRequest)
-		writer.Write([]byte("Not valid"))
 		fmt.Println(parseError.Error())
 	} else {
-
-		if credential.Username == "deniz" && credential.Password == "deniz" {
+		user := beans.UserRepository.GetUserFrom(credential.Email)
+		if credential.Email == user.Email && credential.Password == user.Password {
 
 			expirationTime := time.Now().Add(5 * time.Hour)
 			jwtResponse := &JwtResponse{
-				Username: credential.Username,
+				User: user,
 				StandardClaims: jwt.StandardClaims{
 					ExpiresAt: expirationTime.Unix(),
 				},
@@ -48,7 +49,7 @@ func SignIn(writer http.ResponseWriter, r *http.Request) {
 			tokenString, error := token.SignedString(JwtSecretKey)
 
 			if error == nil {
-				log.Println(credential.Username + " signed in successfully")
+				log.Println(user.Id + " signed in successfully")
 				writer.Header().Add(AuthHeader, AuthHeaderPrefix+tokenString)
 				return
 			}

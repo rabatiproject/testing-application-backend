@@ -28,6 +28,7 @@ func AuthorizationMiddleware(next http.Handler) http.Handler {
 			})
 
 			if err != nil {
+				writer.Write([]byte(err.Error()))
 				if err == jwt.ErrSignatureInvalid {
 					writer.WriteHeader(http.StatusBadRequest)
 					return

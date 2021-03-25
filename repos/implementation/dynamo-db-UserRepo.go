@@ -62,6 +62,7 @@ func getUserFrom(email string) *base.User {
 	proj := expression.NamesList(expression.Name("id"),
 		expression.Name("name"),
 		expression.Name("surname"),
+		expression.Name("password"),
 		expression.Name("email"))
 
 	expr, err := expression.NewBuilder().WithFilter(filt).WithProjection(proj).Build()
