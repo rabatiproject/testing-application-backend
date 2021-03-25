@@ -7,6 +7,7 @@ import (
 	"github.com/rabatiproject/testing-application-backend/beans"
 	"github.com/rabatiproject/testing-application-backend/model/base"
 	"github.com/rabatiproject/testing-application-backend/model/jwtModel"
+	"github.com/rabatiproject/testing-application-backend/utils"
 	"log"
 	"net/http"
 	"strings"
@@ -31,6 +32,7 @@ func SignIn(writer http.ResponseWriter, r *http.Request) {
 
 	if parseError != nil &&
 		len(strings.TrimSpace(credential.Email)) == 0 &&
+		utils.IsEmailValid(credential.Email) &&
 		len(strings.TrimSpace(credential.Password)) == 0 {
 		writer.WriteHeader(http.StatusBadRequest)
 		fmt.Println(parseError.Error())
@@ -67,9 +69,10 @@ func AddUser(writer http.ResponseWriter, request *http.Request) {
 	user := &base.User{}
 	json.NewDecoder(request.Body).Decode(user)
 
-	if len(strings.TrimSpace(user.Email)) == 0 &&
-		len(strings.TrimSpace(user.Surname)) == 0 &&
+	if len(strings.TrimSpace(user.Surname)) == 0 &&
 		len(strings.TrimSpace(user.Name)) == 0 &&
+		len(strings.TrimSpace(user.Email)) == 0 &&
+		utils.IsEmailValid(user.Email) &&
 		beans.UserRepository.UserExists(user.Email) {
 
 		writer.WriteHeader(http.StatusBadRequest)
