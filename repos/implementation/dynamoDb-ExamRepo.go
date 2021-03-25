@@ -1,4 +1,4 @@
-package implmentaions
+package implementation
 
 import (
 	"fmt"

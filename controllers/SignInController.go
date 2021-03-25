@@ -9,6 +9,7 @@ import (
 	"github.com/rabatiproject/testing-application-backend/model/jwtModel"
 	"log"
 	"net/http"
+	"strings"
 	"time"
 )
 
@@ -64,6 +65,16 @@ func SignIn(writer http.ResponseWriter, r *http.Request) {
 func AddUser(writer http.ResponseWriter, request *http.Request) {
 	user := &base.User{}
 	json.NewDecoder(request.Body).Decode(user)
+
+	if len(strings.TrimSpace(user.Email)) == 0 &&
+		len(strings.TrimSpace(user.Surname)) == 0 &&
+		len(strings.TrimSpace(user.Name)) == 0 &&
+		beans.UserRepository.UserExists(user.Email) {
+
+		writer.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
 	creationError := beans.UserRepository.CreateUser(user)
 
 	if creationError != nil {
