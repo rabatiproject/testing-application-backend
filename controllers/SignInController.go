@@ -72,7 +72,7 @@ func AddUser(writer http.ResponseWriter, request *http.Request) {
 	if len(strings.TrimSpace(user.Surname)) == 0 &&
 		len(strings.TrimSpace(user.Name)) == 0 &&
 		len(strings.TrimSpace(user.Email)) == 0 &&
-		utils.IsEmailValid(user.Email) &&
+		!utils.IsEmailValid(user.Email) &&
 		beans.UserRepository.UserExists(user.Email) {
 
 		writer.WriteHeader(http.StatusBadRequest)
