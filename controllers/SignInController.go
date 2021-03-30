@@ -69,9 +69,9 @@ func AddUser(writer http.ResponseWriter, request *http.Request) {
 	user := &base.User{}
 	json.NewDecoder(request.Body).Decode(user)
 
-	if len(strings.TrimSpace(user.Surname)) == 0 &&
-		len(strings.TrimSpace(user.Name)) == 0 &&
-		len(strings.TrimSpace(user.Email)) == 0 &&
+	if utils.IsEmpty(user.Surname) &&
+		utils.IsEmpty(user.Name) &&
+		utils.IsEmpty(user.Email) &&
 		!utils.IsEmailValid(user.Email) &&
 		beans.UserRepository.UserExists(user.Email) {
 
