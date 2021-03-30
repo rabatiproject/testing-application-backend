@@ -30,6 +30,7 @@ func main() {
 	apiRouter.HandleFunc("/question/multipleChoice", controllers.CreateMultipleChoiceQuestion).Methods(http.MethodPost)
 	apiRouter.HandleFunc("/question/openEnded", controllers.CreateOpenEndedQuestion).Methods(http.MethodPost)
 	apiRouter.HandleFunc("/question/programming", controllers.CreateProgrammingQuestion).Methods(http.MethodPost)
+	apiRouter.HandleFunc("/attach/{exam-id}/{question-id}", controllers.AttachQuestionToExam).Methods(http.MethodPut)
 
 	printDynamoTables()
 
