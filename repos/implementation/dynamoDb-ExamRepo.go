@@ -29,3 +29,11 @@ func (d *dynamoDbExamRepo) SaveExam(exam *base.Exam) error {
 	return insert(exam, NewDynamoDbRepo().TableName)
 
 }
+
+func (d *dynamoDbExamRepo) ExamExists(examId string) bool {
+	panic("implement me")
+}
+
+func (d *dynamoDbExamRepo) ExamContainsQuestions(questionId string) bool {
+	panic("implement me")
+}

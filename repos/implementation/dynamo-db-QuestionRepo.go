@@ -26,8 +26,17 @@ func (q *questionRepo) CreateOEQuestion(question *base.OpenEndedQuestion) error 
 	question.Type = base.QuestionOpenEnded
 	return insert(question, NewQuestionRepo().TableName)
 }
+
 func (q *questionRepo) CreatePQuestion(question *base.ProgrammingQuestion) error {
 	question.Id = uuid.New().String()
 	question.Type = base.QuestionProgramming
 	return insert(question, NewQuestionRepo().TableName)
+}
+
+func (q *questionRepo) QuestionExists(questionId string) bool {
+	panic("implement me")
+}
+
+func (q *questionRepo) AddToExam(questionId, examId string) error {
+	panic("implement me")
 }

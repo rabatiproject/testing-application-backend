@@ -4,7 +4,6 @@ import (
 	"errors"
 	"github.com/rabatiproject/testing-application-backend/beans"
 	"github.com/rabatiproject/testing-application-backend/model/base"
-	"github.com/rabatiproject/testing-application-backend/utils"
 )
 
 func CreateNewExam(exam *base.Exam) error {
@@ -12,9 +11,24 @@ func CreateNewExam(exam *base.Exam) error {
 }
 
 func AttachQuestionToExam(examId, questionId string) error {
-	if utils.IsEmpty(examId) || utils.IsEmpty(questionId) {
-		return errors.New("Empty values")
+	examExists := beans.ExamRepository.ExamExists(examId)
+
+	if !examExists {
+		return errors.New("EXAM DOES NOT EXIST")
 	}
 
+	questionExists := beans.QuestionRepository.QuestionExists(questionId)
+
+	if !questionExists {
+		return errors.New("QUESTION DOES NO EXIST")
+	}
+
+	examContainsQuestion := beans.ExamRepository.ExamContainsQuestions(questionId)
+
+	if examContainsQuestion {
+		return errors.New("EXAM ALREADY CONTAINS THE QUESTION")
+	} else {
+		return beans.QuestionRepository.AddToExam(questionId, examId)
+	}
 	return nil
 }
