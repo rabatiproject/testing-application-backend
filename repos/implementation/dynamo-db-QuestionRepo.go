@@ -65,7 +65,3 @@ func (q *questionRepo) QuestionExists(questionId string) bool {
 	}
 	return len(result.Items) > 0
 }
-
-func (q *questionRepo) AddToExam(questionId, examId string) error {
-	panic("implement me")
-}

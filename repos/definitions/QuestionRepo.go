@@ -7,5 +7,4 @@ type QuestionRepo interface {
 	CreateOEQuestion(question *base.OpenEndedQuestion) error
 	CreatePQuestion(question *base.ProgrammingQuestion) error
 	QuestionExists(questionId string) bool
-	AddToExam(questionId, examId string) error
 }

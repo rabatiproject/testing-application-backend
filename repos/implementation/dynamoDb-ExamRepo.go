@@ -61,7 +61,3 @@ func (d *dynamoDbExamRepo) ExamExists(examId string) bool {
 	}
 	return len(result.Items) > 0
 }
-
-func (d *dynamoDbExamRepo) ExamContainsQuestions(questionId string) bool {
-	panic("implement me")
-}

@@ -23,12 +23,12 @@ func AttachQuestionToExam(examId, questionId string) error {
 		return errors.New("QUESTION DOES NO EXIST")
 	}
 
-	examContainsQuestion := beans.ExamRepository.ExamContainsQuestions(questionId)
-
-	if examContainsQuestion {
-		return errors.New("EXAM ALREADY CONTAINS THE QUESTION")
-	} else {
-		return beans.QuestionRepository.AddToExam(questionId, examId)
-	}
-	return nil
+	//examContainsQuestion := beans.ExamQuestionRepository.ExamContainsQuestions(questionId)
+	//
+	//if examContainsQuestion {
+	//	return errors.New("EXAM ALREADY CONTAINS THE QUESTION")
+	//} else {
+	return beans.ExamQuestionRepository.AddToExam(questionId, examId)
+	//}
+	//return nil
 }
