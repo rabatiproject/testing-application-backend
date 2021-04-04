@@ -26,7 +26,7 @@ func main() {
 	apiRouter.HandleFunc("/test", controllers.Test)
 
 	apiRouter.HandleFunc("/exam", controllers.CreateExam).Methods(http.MethodPost)
-	apiRouter.HandleFunc("/exam", controllers.GetExam).Methods(http.MethodGet)
+	apiRouter.HandleFunc("/exam/{exam-id}", controllers.GetExam).Methods(http.MethodGet)
 	apiRouter.HandleFunc("/exam/{exam-id}/{question-id}", controllers.AttachQuestionToExam).Methods(http.MethodPut)
 
 	apiRouter.HandleFunc("/question/multipleChoice", controllers.CreateMultipleChoiceQuestion).Methods(http.MethodPost)

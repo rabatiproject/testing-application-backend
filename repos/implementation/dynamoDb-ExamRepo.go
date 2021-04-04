@@ -2,7 +2,6 @@ package implementation
 
 import (
 	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/expression"
 	"github.com/google/uuid"
@@ -18,13 +17,6 @@ func NewDynamoDbRepo() *dynamoDbExamRepo {
 	return &dynamoDbExamRepo{
 		TableName: "EXAMS",
 	}
-}
-
-func getNewClient() *dynamodb.DynamoDB {
-	sess := session.Must(session.NewSessionWithOptions(session.Options{
-		SharedConfigState: session.SharedConfigEnable,
-	}))
-	return dynamodb.New(sess)
 }
 
 func (d *dynamoDbExamRepo) SaveExam(exam *base.Exam) error {
