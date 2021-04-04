@@ -20,6 +20,10 @@ func CreateExam(writer http.ResponseWriter, request *http.Request) {
 	}
 }
 
+func GetExam(writer http.ResponseWriter, request *http.Request) {
+
+}
+
 func AttachQuestionToExam(writer http.ResponseWriter, request *http.Request) {
 
 	pathVariables := mux.Vars(request)
