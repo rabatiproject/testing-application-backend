@@ -1,9 +1,11 @@
 package managers
 
 import (
+	"encoding/json"
 	"errors"
 	"github.com/rabatiproject/testing-application-backend/beans"
 	"github.com/rabatiproject/testing-application-backend/model/base"
+	"net/http"
 )
 
 func CreateNewExam(exam *base.Exam) error {
@@ -31,4 +33,15 @@ func AttachQuestionToExam(examId, questionId string) error {
 		return beans.ExamQuestionRepository.AddToExam(questionId, examId)
 	}
 	return nil
+}
+
+func GetExam(examId string) (*base.Exam, error) {
+	exists := beans.ExamRepository.ExamExists(examId)
+
+	if !exists {
+		return nil, errors.New("CAN NOT FIND EXAM")
+	}
+
+	return beans.ExamRepository.GetExam(examId)
+
 }

@@ -3,7 +3,6 @@ package controllers
 import (
 	"encoding/json"
 	"github.com/gorilla/mux"
-	"github.com/rabatiproject/testing-application-backend/beans"
 	"github.com/rabatiproject/testing-application-backend/managers"
 	"github.com/rabatiproject/testing-application-backend/model/base"
 	"github.com/rabatiproject/testing-application-backend/utils"
@@ -28,15 +27,16 @@ func GetExam(writer http.ResponseWriter, request *http.Request) {
 		return
 	}
 
-	exists := beans.ExamRepository.ExamExists(examId)
-	if !exists {
-		writer.WriteHeader(http.StatusNotFound)
-		return
-	}
-	err := json.NewEncoder(writer).Encode(beans.ExamRepository.GetExam(examId))
+	exam, err := managers.GetExam(examId)
 
 	if err != nil {
 		writer.WriteHeader(http.StatusInternalServerError)
+	} else {
+		err2 := json.NewEncoder(writer).Encode(exam)
+
+		if err2 != nil {
+			writer.WriteHeader(http.StatusInternalServerError)
+		}
 	}
 }
 
